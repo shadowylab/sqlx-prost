@@ -2,6 +2,8 @@
 #![warn(missing_docs)]
 #![doc = include_str!("../README.md")]
 
+use core::ops::{Deref, DerefMut};
+
 use prost::Message;
 use sqlx::decode::Decode;
 use sqlx::encode::{Encode, IsNull};
@@ -9,10 +11,31 @@ use sqlx::error::BoxDynError;
 use sqlx::{Database, Type};
 
 /// Wrapper for Protobuf messages to be used with sqlx.
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct SqlxProto<T>(pub T)
 where
     T: Message;
+
+impl<T> Default for SqlxProto<T>
+where
+    T: Message + Default,
+{
+    #[inline]
+    fn default() -> Self {
+        Self(T::default())
+    }
+}
+
+impl<T> SqlxProto<T>
+where
+    T: Message,
+{
+    /// Get inner value
+    #[inline]
+    pub fn into_inner(self) -> T {
+        self.0
+    }
+}
 
 impl<T> From<T> for SqlxProto<T>
 where
@@ -31,6 +54,38 @@ where
     #[inline]
     fn as_ref(&self) -> &T {
         &self.0
+    }
+}
+
+impl<T> AsMut<T> for SqlxProto<T>
+where
+    T: Message,
+{
+    #[inline]
+    fn as_mut(&mut self) -> &mut T {
+        &mut self.0
+    }
+}
+
+impl<T> Deref for SqlxProto<T>
+where
+    T: Message,
+{
+    type Target = T;
+
+    #[inline]
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+impl<T> DerefMut for SqlxProto<T>
+where
+    T: Message,
+{
+    #[inline]
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.0
     }
 }
 
