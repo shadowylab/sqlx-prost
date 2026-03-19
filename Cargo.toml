@@ -1,0 +1,15 @@
+[package]
+name = "sqlx-prost"
+version = "0.1.0"
+edition = "2021"
+description = "A small helper for using prost protobuf types with sqlx."
+authors = ["Yuki Kishimoto <yukikishimoto@protonmail.com>"]
+homepage = "https://github.com/rust-nostr/nostr"
+repository = "https://github.com/rust-nostr/nostr.git"
+license = "MIT"
+readme = "README.md"
+keywords = ["sqlx", "prost"]
+
+[dependencies]
+prost = { version = "0.14", default-features = false }
+sqlx = { version = "0.8", default-features = false }
