@@ -12,4 +12,4 @@ keywords = ["sqlx", "prost"]
 
 [dependencies]
 prost = { version = "0.14", default-features = false }
-sqlx = { version = "0.8", default-features = false }
+sqlx = { version = "0.9", default-features = false }

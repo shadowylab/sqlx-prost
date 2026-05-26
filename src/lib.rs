@@ -108,7 +108,7 @@ where
 {
     fn encode_by_ref(
         &self,
-        buf: &mut <DB as Database>::ArgumentBuffer<'a>,
+        buf: &mut <DB as Database>::ArgumentBuffer,
     ) -> Result<IsNull, BoxDynError> {
         let bytes = self.0.encode_to_vec();
         <Vec<u8> as Encode<DB>>::encode_by_ref(&bytes, buf)
